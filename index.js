@@ -16,6 +16,8 @@ intializeCatmon = () => {
   return { firstCatmon, secondCatmon };
 };
 
+// tackle, scratch, growl, leer, pound, tail whip, harden
+
 createCatmon = (catmonName, catmonSpecies) => {
   let name = catmonName;
   let type;
@@ -79,17 +81,25 @@ hpCheck = (firstCatmon, secondCatmon) => {
 battleCatmon = (firstCatmon, secondCatmon) => {
   while (firstCatmon.hp > 0 && secondCatmon.hp > 0) {
     if (firstCatmon.speed > secondCatmon.speed) {
-      secondCatmon.hp = secondCatmon.hp - (firstCatmon.attack - secondCatmon.defense);
-      hpCheck(firstCatmon, secondCatmon);
-      firstCatmon.hp = firstCatmon.hp - (secondCatmon.attack - firstCatmon.defense);
-      hpCheck(firstCatmon, secondCatmon);
-    } else {
-      firstCatmon.hp = firstCatmon.hp - (secondCatmon.attack - firstCatmon.defense);
-      hpCheck(firstCatmon, secondCatmon);
-      secondCatmon.hp = secondCatmon.hp - (firstCatmon.attack - secondCatmon.defense);
-      hpCheck(firstCatmon, secondCatmon);
-    }
+      if (firstCatmon.attack > secondCatmon.defense) {
+        secondCatmon.hp = secondCatmon.hp - (firstCatmon.attack - secondCatmon.defense);
+        hpCheck(firstCatmon, secondCatmon);
+        firstCatmon.hp = firstCatmon.hp - (secondCatmon.attack - firstCatmon.defense);
+        hpCheck(firstCatmon, secondCatmon);
+      } else {
+        firstCatmon.hp--;
+      }
 
+    } else {
+      if (secondCatmon.attack > firstCatmon.defense) {
+        firstCatmon.hp = firstCatmon.hp - (secondCatmon.attack - firstCatmon.defense);
+        hpCheck(firstCatmon, secondCatmon);
+        secondCatmon.hp = secondCatmon.hp - (firstCatmon.attack - secondCatmon.defense);
+        hpCheck(firstCatmon, secondCatmon);
+      } else {
+        secondCatmon.hp--;
+      }
+    }
   };
 };
 
