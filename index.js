@@ -33,7 +33,7 @@ createCatmon = (catmonName, catmonSpecies) => {
   if (species == 'Brownie') {
     type = 'Rock';
     attack = 10;
-    defense = 50;
+    defense = 9;
     spAttack = 5;
     spDefense = 5;
     hp = 30;
@@ -44,7 +44,7 @@ createCatmon = (catmonName, catmonSpecies) => {
   if (species == 'Garfield') {
     type = 'Fire';
     attack = 9;
-    defense = 30;
+    defense = 5;
     spAttack = 14;
     spDefense = 6;
     hp = 25;
@@ -55,7 +55,7 @@ createCatmon = (catmonName, catmonSpecies) => {
   if (species == 'Neighbor') {
     type = 'Dark';
     attack = 7;
-    defense = 40;
+    defense = 8;
     spAttack = 20;
     spDefense = 1;
     hp = 20;
@@ -67,8 +67,8 @@ createCatmon = (catmonName, catmonSpecies) => {
 };
 
 hpCheck = (firstCatmon, secondCatmon) => {
-  console.log(`First Catmon HP: ${firstCatmon.hp}`);
-  console.log(`Second Catmon HP: ${secondCatmon.hp}`);
+  console.log(`${firstCatmon.name}'s HP: ${firstCatmon.hp}`);
+  console.log(`${secondCatmon.name}'s HP: ${secondCatmon.hp}`);
   if (firstCatmon.hp < 0) {
     console.log(`${secondCatmon.name} wins!`);
   }
@@ -78,74 +78,107 @@ hpCheck = (firstCatmon, secondCatmon) => {
   }
 };
 
-fightScenarios = (firstCatmon, secondCatmon) => {
-  if (firstCatmon.attack > secondCatmon.defense && secondCatmon.attack > firstCatmon.defense) {
+attackDefenseCheck = (fasterCatmon, slowerCatmon) => {
+  if (fasterCatmon.attack > slowerCatmon.defense && slowerCatmon.attack > fasterCatmon.defense) {
     // both catmon's attacks are higher than enemy's defense
     return 1;
   }
-  if (firstCatmon.attack <= secondCatmon.defense && secondCatmon.attack > firstCatmon.defense) {
-    // first catmon deals 1 damage, second catmon normal damage
+  if (fasterCatmon.attack <= slowerCatmon.defense && slowerCatmon.attack > fasterCatmon.defense) {
+    // faster catmon deals 1 damage, slower catmon normal damage
     return 2;
   }
-  if (firstCatmon.attack > secondCatmon.defense && secondCatmon.attack <= firstCatmon.defense) {
-    // first catmon deals normal damage, second catmon deals 1 damage
+  if (fasterCatmon.attack > slowerCatmon.defense && slowerCatmon.attack <= fasterCatmon.defense) {
+    // faster catmon deals normal damage, slower catmon deals 1 damage
     return 3;
   }
-  if (firstCatmon.attack <= secondCatmon.defense && secondCatmon.attack <= firstCatmon.defense) {
+  if (fasterCatmon.attack <= slowerCatmon.defense && slowerCatmon.attack <= fasterCatmon.defense) {
     // both catmons deal 1 damage
     return 4;
   }
 };
 
+fasterFightLog = (fasterCatmon) => {
+  console.log(`${fasterCatmon.name} is faster!`);
+  console.log(`${fasterCatmon.name} attacks for ${fasterCatmon.attack}!`);
+};
+
+slowerFightLog = (slowerCatmon) => {
+  console.log('');
+  console.log('_____________');
+  console.log('');
+  console.log(`${slowerCatmon.name}'s turn!`);
+  console.log(`${slowerCatmon.name} attacks for ${slowerCatmon.attack}!`);
+};
+
+fight = (fasterCatmon, slowerCatmon) => {
+  let fightScenario = attackDefenseCheck(fasterCatmon, slowerCatmon);
+  switch (fightScenario) {
+    case 1:
+
+      fasterFightLog(fasterCatmon);
+      slowerCatmon.hp = slowerCatmon.hp - (fasterCatmon.attack - slowerCatmon.defense);
+      hpCheck(firstCatmon, slowerCatmon);
+
+      slowerFightLog(slowerCatmon);
+      fasterCatmon.hp = fasterCatmon.hp - (slowerCatmon.attack - fasterCatmon.defense);
+      hpCheck(fasterCatmon, slowerCatmon);
+
+      break;
+    case 2:
+
+      fasterFightLog(fasterCatmon);
+      slowerCatmon.hp--;
+      hpCheck(fasterCatmon, slowerCatmon);
+
+      slowerFightLog(slowerCatmon);
+      fasterCatmon.hp = fasterCatmon.hp - (slowerCatmon.attack - fasterCatmon.defense);
+      hpCheck(fasterCatmon, slowerCatmon);
+
+      break;
+    case 3:
+
+      fasterFightLog(fasterCatmon);
+      slowerCatmon.hp = slowerCatmon.hp - (fasterCatmonattack - slowerCatmon.defense);
+      hpCheck(fasterCatmon, slowerCatmon);
+
+      slowerFightLog(slowerCatmon);
+      fasterCatmon.hp--;
+      hpCheck(fasterCatmon, slowerCatmon);
+
+      break;
+    case 4:
+
+      fasterFightLog(fasterCatmon);
+      slowerCatmon.hp--;
+      hpCheck(fasterCatmon, slowerCatmon);
+
+      slowerFightLog(slowerCatmon);
+      fasterCatmon.hp--;
+      hpCheck(fasterCatmon, slowerCatmon);
+
+      break;
+  }
+};
+
 battleCatmon = (firstCatmon, secondCatmon) => {
+  let round = 1;
+
   //battle loop until one goes 0 hp
   while (firstCatmon.hp > 0 && secondCatmon.hp > 0) {
+    console.log(`Round ${round}`);
+    console.log('');
     //check if first catmon is faster
     if (firstCatmon.speed > secondCatmon.speed) {
-      //check if attack is higher than defense, needed so enemy doesnt accidentally get healed with our formula 
-      console.log("here");
-      let fightScenario = fightScenarios(firstCatmon, secondCatmon);
-      switch (fightScenario) {
-        case 1:
-          secondCatmon.hp = secondCatmon.hp - (firstCatmon.attack - secondCatmon.defense);
-          hpCheck(firstCatmon, secondCatmon);
-          firstCatmon.hp = firstCatmon.hp - (secondCatmon.attack - firstCatmon.defense);
-          hpCheck(firstCatmon, secondCatmon);
-          break;
-        case 2:
-          secondCatmon.hp--;
-          hpCheck(firstCatmon, secondCatmon);
-          firstCatmon.hp = firstCatmon.hp - (secondCatmon.attack - firstCatmon.defense);
-          hpCheck(firstCatmon, secondCatmon);
-          break;
-        case 3:
-          firstCatmon.hp--;
-          hpCheck(firstCatmon, secondCatmon);
-          secondCatmon.hp = secondCatmon.hp - (firstCatmon.attack - secondCatmon.defense);
-          hpCheck(firstCatmon, secondCatmon);
-          break;
-        case 4:
-          firstCatmon.hp--;
-          hpCheck(firstCatmon, secondCatmon);
-          secondCatmon.hp--;
-          hpCheck(firstCatmon, secondCatmon);
-          break;
-      }
+      //check if first catmon is faster
+      fight(firstCatmon, secondCatmon);
     } else {
       //check if second catmon is faster
-      //check if attack is higher than defense, needed so enemy doesnt accidentally get healed with our formula 
-      console.log("here2");
-      if (secondCatmon.attack > firstCatmon.defense) {
-        firstCatmon.hp = firstCatmon.hp - (secondCatmon.attack - firstCatmon.defense);
-        hpCheck(firstCatmon, secondCatmon);
-        secondCatmon.hp = secondCatmon.hp - (firstCatmon.attack - secondCatmon.defense);
-        hpCheck(firstCatmon, secondCatmon);
-      } else {
-        //1 hp damage if defense is higher than the attack
-        secondCatmon.hp--;
-        hpCheck(firstCatmon, secondCatmon);
-      }
+      fight(secondCatmon, firstCatmon);
     }
+    console.log('');
+    console.log('____________________________');
+    console.log('');
+    round++;
   };
 };
 
