@@ -5,10 +5,10 @@ intializeCatmon = () => {
   console.log('Welcome to catmon!');
 
   let firstCatmonSpecies = readline.question(`First player select your catmon! Choices: ${catmons[0]}, ${catmons[1]}, ${catmons[2]} `);
-  let firstCatmonName = readline.question(`What is the name of your ${firstCatmonSpecies}?`);
+  let firstCatmonName = readline.question(`What is the name of your ${firstCatmonSpecies}?: `);
 
   let secondCatmonSpecies = readline.question(`Second player select your catmon! Choices: ${catmons[0]}, ${catmons[1]}, ${catmons[2]} `);
-  let secondCatmonName = readline.question(`What is the name of your ${secondCatmonSpecies}? `);
+  let secondCatmonName = readline.question(`What is the name of your ${secondCatmonSpecies}?: `);
 
   firstCatmon = createCatmon(firstCatmonName, firstCatmonSpecies);
   secondCatmon = createCatmon(secondCatmonName, secondCatmonSpecies);
@@ -193,7 +193,7 @@ main();
 // firstCatmonAttack = (firstCatmon, secondCatmon) => {
 //   secondCatmon.hp = secondCatmon.hp - firstCatmon.attack;
 //   firstCatmon.hp = firstCatmon.hp - secondCatmon.attack;
-// };
+// };S
 
 // secondCatmonAttack = (firstCatmon, secondCatmon) => {
 //   firstCatmon.hp = firstCatmon.hp - secondCatmon.attack;
